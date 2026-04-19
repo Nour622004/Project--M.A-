@@ -1,373 +1,235 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
+<html lang="ar" dir="rtl" data-theme="light" data-font="medium">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="تطبيق اذكار الصباح والمساء - أذكار المسلم اليومية">
     <title>اذكار الصباح والمساء</title>
-    <!-- Google Fonts -->
+    <meta name="description" content="تطبيق اذكار الصباح والمساء - أذكار المسلم اليومية الشاملة">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div id="app" class="app-container">
-        <!-- Top bar -->
-        <header class="app-header" id="app-header">
-            <div class="header-left">
-                <button id="back-btn" class="icon-btn hidden"><i class="fas fa-chevron-right"></i></button>
+<div class="app-container">
+    <!-- Header -->
+    <header class="app-header" id="app-header">
+        <button class="icon-btn hidden" id="back-btn"><i class="fas fa-chevron-right"></i></button>
+        <h1 class="header-title" id="app-title">الإصدار : 4.5</h1>
+        <div style="width:36px;"></div>
+    </header>
+
+    <main class="app-content">
+        <!-- HOME -->
+        <section class="view active" id="view-home">
+            <div class="menu-grid" id="menu-grid"></div>
+        </section>
+
+        <!-- TASBEEH -->
+        <section class="view" id="view-tasbeeh">
+            <div class="tasbeeh-container">
+                <div class="dhikr-selector" id="dhikr-selector">
+                    <span id="current-dhikr-text">سبحان الله</span>
+                    <i class="fas fa-caret-down"></i>
+                </div>
+                <div class="tasbeeh-stats">
+                    <div class="stat-box"><span class="stat-label">اجمالي الذكر</span><span class="stat-value" id="total-count">0</span></div>
+                    <div class="stat-box"><span class="stat-label">العدد</span><span class="stat-value" id="current-count">0</span></div>
+                </div>
+                <div class="tasbeeh-circle-container">
+                    <div class="tasbeeh-btn" id="tasbeeh-btn"><span class="tasbeeh-digital" id="tasbeeh-digital">0</span></div>
+                </div>
+                <div class="tasbeeh-actions">
+                    <button class="tasbeeh-action-btn" id="tasbeeh-reset"><i class="fas fa-redo-alt"></i></button>
+                </div>
             </div>
-            <div class="header-title" id="app-title">الإصدار : 4.5</div>
-            <div class="header-right"></div>
-        </header>
+        </section>
 
-        <!-- Main Content Area -->
-        <main class="app-content">
+        <!-- DHIKR MODAL -->
+        <div class="modal" id="dhikr-modal">
+            <div class="modal-content" id="dhikr-list"></div>
+        </div>
 
-            <!-- VIEW: Home Grid -->
-            <section id="view-home" class="view active">
-                <div class="menu-grid" id="menu-grid">
-                    <!-- Cards injected by JS -->
+        <!-- AZKAR READER -->
+        <section class="view" id="view-azkar">
+            <div class="tabs">
+                <button class="tab-btn active" data-target="tab-morning" data-view="azkar">أذكار الصباح</button>
+                <button class="tab-btn" data-target="tab-evening" data-view="azkar">أذكار المساء</button>
+            </div>
+            <div class="date-bar">
+                <span id="hijri-date"></span>
+                <span id="day-name"></span>
+                <span id="gregorian-date"></span>
+            </div>
+            <div class="reader-card">
+                <div class="reader-header">
+                    <span class="counter-text" id="azkar-counter-text">1/22</span>
+                    <div class="circle-counter" id="circle-counter">1</div>
                 </div>
-            </section>
+                <div class="reader-title" id="azkar-title">آية الكرسي</div>
+                <div class="reader-body"><p class="reader-text" id="azkar-content"></p></div>
+            </div>
+            <div class="reader-controls">
+                <button class="control-btn share-btn" id="share-azkar-btn"><i class="fas fa-share-alt"></i></button>
+                <button class="control-btn nav-btn" id="azkar-prev-btn"><i class="fas fa-chevron-right"></i></button>
+                <button class="control-btn nav-btn" id="azkar-next-btn"><i class="fas fa-chevron-left"></i></button>
+            </div>
+        </section>
 
-            <!-- VIEW: Tasbeeh -->
-            <section id="view-tasbeeh" class="view">
-                <div class="tasbeeh-container">
-                    <div class="dhikr-selector" id="dhikr-selector">
-                        <span id="current-dhikr-text">سبحان الله</span>
-                        <i class="fas fa-caret-down"></i>
-                    </div>
+        <!-- COMPREHENSIVE -->
+        <section class="view" id="view-comprehensive">
+            <div class="comprehensive-list" id="comprehensive-list"></div>
+        </section>
 
-                    <div class="tasbeeh-stats">
-                        <div class="stat-box">
-                            <span class="stat-label">اجمالي الذكر</span>
-                            <span class="stat-value" id="total-count">0</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">العدد</span>
-                            <span class="stat-value" id="current-count">0</span>
-                        </div>
-                    </div>
-
-                    <div class="tasbeeh-circle-container">
-                        <button class="tasbeeh-btn" id="tasbeeh-btn">
-                            <span class="tasbeeh-digital" id="tasbeeh-digital">0</span>
-                        </button>
-                    </div>
-
-                    <div class="tasbeeh-actions">
-                        <button class="tasbeeh-action-btn" id="tasbeeh-reset"><i class="fas fa-redo-alt"></i></button>
-                    </div>
+        <!-- RUQYAH -->
+        <section class="view" id="view-ruqyah">
+            <div class="reader-card">
+                <div class="reader-header">
+                    <span class="counter-text" id="ruqyah-counter-text">1/10</span>
+                    <div class="circle-counter" id="ruqyah-circle-counter">1</div>
                 </div>
-                <!-- Dhikr Selection Modal -->
-                <div id="dhikr-modal" class="modal">
-                    <div class="modal-content" id="dhikr-list">
-                        <!-- List injected by JS -->
+                <div class="reader-title" id="ruqyah-title"></div>
+                <div class="reader-body"><p class="reader-text" id="ruqyah-content"></p></div>
+            </div>
+            <div class="reader-controls">
+                <button class="control-btn share-btn" id="share-ruqyah-btn"><i class="fas fa-share-alt"></i></button>
+                <button class="control-btn nav-btn" id="ruqyah-prev-btn"><i class="fas fa-chevron-right"></i></button>
+                <button class="control-btn nav-btn" id="ruqyah-next-btn"><i class="fas fa-chevron-left"></i></button>
+            </div>
+        </section>
+
+        <!-- NAMES OF ALLAH -->
+        <section class="view" id="view-names">
+            <div class="names-header-card">
+                <div class="names-icon"><span class="allah-text">الله</span></div>
+                <div class="names-title-text">أسماء الله الحسنى</div>
+                <div class="names-subtitle">لِلَّهِ تِسْعَةٌ وَتِسْعُونَ اسْمًا مِائَةٌ إِلَّا وَاحِدًا</div>
+            </div>
+            <div class="names-grid" id="names-grid"></div>
+        </section>
+
+        <!-- RAMADAN -->
+        <section class="view" id="view-ramadan">
+            <div class="reader-card">
+                <div class="reader-header">
+                    <span class="counter-text" id="ramadan-counter-text">1/10</span>
+                    <div class="circle-counter" id="ramadan-circle-counter">1</div>
+                </div>
+                <div class="reader-title" id="ramadan-title"></div>
+                <div class="reader-body"><p class="reader-text" id="ramadan-content"></p></div>
+            </div>
+            <div class="reader-controls">
+                <button class="control-btn share-btn" id="share-ramadan-btn"><i class="fas fa-share-alt"></i></button>
+                <button class="control-btn nav-btn" id="ramadan-prev-btn"><i class="fas fa-chevron-right"></i></button>
+                <button class="control-btn nav-btn" id="ramadan-next-btn"><i class="fas fa-chevron-left"></i></button>
+            </div>
+        </section>
+
+        <!-- LISTEN -->
+        <section class="view" id="view-listen">
+            <div class="tabs">
+                <button class="tab-btn active" data-target="listen-morning" data-view="listen">سماع أذكار الصباح</button>
+                <button class="tab-btn" data-target="listen-evening" data-view="listen">سماع أذكار المساء</button>
+            </div>
+            <div class="audio-player-card">
+                <div class="visualizer" id="visualizer">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+                <button class="play-pause-btn" id="main-play-btn"><i class="fas fa-play"></i></button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-up"></i>
+                    <input type="range" class="slider" id="volume-slider" min="0" max="100" value="50">
+                    <i class="fas fa-volume-mute"></i>
+                </div>
+            </div>
+            <audio id="audio-player" preload="none"></audio>
+        </section>
+
+        <!-- ADD DHIKR -->
+        <section class="view" id="view-add-dhikr">
+            <div class="add-dhikr-container">
+                <div class="add-dhikr-card">
+                    <div class="add-dhikr-icon"><i class="fas fa-plus-circle"></i></div>
+                    <div class="add-dhikr-title">إضافة ذكر جديد</div>
+                    <div class="add-dhikr-desc">أضف ذكرًا خاصًا بك إلى المسبحة الإلكترونية</div>
+                    <div class="form-group">
+                        <label>نص الذكر</label>
+                        <textarea class="form-input" id="custom-dhikr-input" rows="3" placeholder="اكتب الذكر هنا..."></textarea>
                     </div>
+                    <button class="add-dhikr-btn" id="add-dhikr-btn"><i class="fas fa-plus"></i> إضافة</button>
+                    <div class="feedback-msg hidden" id="add-dhikr-feedback"></div>
                 </div>
-            </section>
-
-            <!-- VIEW: Add Custom Dhikr -->
-            <section id="view-add-dhikr" class="view">
-                <div class="add-dhikr-container">
-                    <div class="add-dhikr-card">
-                        <div class="add-dhikr-icon">
-                            <i class="fas fa-plus-circle"></i>
-                        </div>
-                        <h2 class="add-dhikr-title">إضافة تسبيحة جديدة</h2>
-                        <p class="add-dhikr-desc">أضف ذكراً مخصصاً إلى المسبحة الالكترونية</p>
-                        <div class="form-group">
-                            <label for="custom-dhikr-input">نص الذكر</label>
-                            <textarea id="custom-dhikr-input" class="form-input" rows="3" placeholder="اكتب الذكر هنا..."></textarea>
-                        </div>
-                        <button class="add-dhikr-btn" id="add-dhikr-btn">
-                            <i class="fas fa-plus"></i>
-                            <span>إضافة الذكر</span>
-                        </button>
-                        <div id="add-dhikr-feedback" class="feedback-msg hidden"></div>
-                    </div>
-
-                    <div class="custom-dhikr-list-section">
-                        <h3 class="section-title">التسبيحات المضافة</h3>
-                        <div id="custom-dhikr-list" class="custom-dhikr-list">
-                            <!-- Injected by JS -->
-                        </div>
-                        <div id="no-custom-dhikr" class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <p>لا توجد تسبيحات مضافة بعد</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- VIEW: Azkar Reader (Morning/Evening) -->
-            <section id="view-azkar" class="view">
-                <div class="tabs">
-                    <button class="tab-btn active" data-target="tab-morning" data-view="azkar">أذكار الصباح</button>
-                    <button class="tab-btn" data-target="tab-evening" data-view="azkar">أذكار المساء</button>
-                </div>
-
-                <div class="date-bar">
-                    <span id="gregorian-date">16-10-2023</span>
-                    <span id="day-name">الاثنين</span>
-                    <span id="hijri-date">01-04-1445</span>
-                </div>
-
-                <div class="reader-card">
-                    <div class="reader-header">
-                        <span class="counter-text" id="azkar-counter-text">1/22</span>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-weight: bold; color: var(--text-main); font-size: 0.95rem;">عدد
-                                التكرار:</span>
-                            <div class="circle-counter" id="circle-counter">0</div>
-                        </div>
-                    </div>
-                    <h3 id="azkar-title" class="reader-title">العنوان</h3>
-                    <div class="reader-body">
-                        <p class="reader-text" id="azkar-content">...</p>
-                    </div>
-                </div>
-
-                <div class="reader-controls">
-                    <button class="control-btn share-btn" id="share-azkar-btn"><i class="fas fa-share-nodes"></i></button>
-                    <button class="control-btn audio-play-btn" id="azkar-audio-btn"><i class="fas fa-play"></i></button>
-                    <button class="control-btn nav-btn prev-btn" id="azkar-prev-btn"><i class="fas fa-chevron-right"></i></button>
-                    <button class="control-btn nav-btn next-btn" id="azkar-next-btn"><i class="fas fa-chevron-left"></i></button>
-                </div>
-            </section>
-
-            <!-- VIEW: Comprehensive Azkar -->
-            <section id="view-comprehensive" class="view">
-                <div class="comprehensive-list" id="comprehensive-list">
-                    <!-- Injected by JS -->
-                </div>
-            </section>
-
-            <!-- VIEW: Ruqyah Shariah -->
-            <section id="view-ruqyah" class="view">
-                <div class="reader-card">
-                    <div class="reader-header">
-                        <span class="counter-text" id="ruqyah-counter-text">1/10</span>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-weight: bold; color: var(--text-main); font-size: 0.95rem;">عدد
-                                التكرار:</span>
-                            <div class="circle-counter" id="ruqyah-circle-counter">0</div>
-                        </div>
-                    </div>
-                    <h3 id="ruqyah-title" class="reader-title">العنوان</h3>
-                    <div class="reader-body">
-                        <p class="reader-text" id="ruqyah-content">...</p>
+                <div class="custom-dhikr-list-section">
+                    <div class="section-title">الأذكار المضافة</div>
+                    <div class="custom-dhikr-list" id="custom-dhikr-list"></div>
+                    <div class="empty-state hidden" id="no-custom-dhikr">
+                        <i class="fas fa-inbox"></i>
+                        <p>لم تقم بإضافة أي أذكار بعد</p>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="reader-controls">
-                    <button class="control-btn share-btn" id="share-ruqyah-btn"><i class="fas fa-share-nodes"></i></button>
-                    <button class="control-btn audio-play-btn" id="ruqyah-audio-btn"><i class="fas fa-play"></i></button>
-                    <button class="control-btn nav-btn prev-btn" id="ruqyah-prev-btn"><i class="fas fa-chevron-right"></i></button>
-                    <button class="control-btn nav-btn next-btn" id="ruqyah-next-btn"><i class="fas fa-chevron-left"></i></button>
-                </div>
-            </section>
-
-            <!-- VIEW: Names of Allah -->
-            <section id="view-names" class="view">
-                <div class="names-header-card">
-                    <div class="names-icon">
-                        <span class="allah-text">الله</span>
+        <!-- SETTINGS -->
+        <section class="view" id="view-settings">
+            <div class="settings-container">
+                <div class="settings-section">
+                    <div class="settings-section-title"><i class="fas fa-volume-up"></i> الصوت والاهتزاز</div>
+                    <div class="setting-item">
+                        <span class="setting-label">الاهتزاز</span>
+                        <label class="toggle-switch"><input type="checkbox" id="setting-vibration" checked><span class="toggle-slider"></span></label>
                     </div>
-                    <h2 class="names-title-text">أسماء الله الحسنى</h2>
-                    <p class="names-subtitle">وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا</p>
-                </div>
-                <div class="names-grid" id="names-grid">
-                    <!-- Injected by JS -->
-                </div>
-            </section>
-
-            <!-- VIEW: Ramadan Duas -->
-            <section id="view-ramadan" class="view">
-                <div class="reader-card">
-                    <div class="reader-header">
-                        <span class="counter-text" id="ramadan-counter-text">1/10</span>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-weight: bold; color: var(--text-main); font-size: 0.95rem;">عدد
-                                التكرار:</span>
-                            <div class="circle-counter" id="ramadan-circle-counter">0</div>
-                        </div>
-                    </div>
-                    <h3 id="ramadan-title" class="reader-title">العنوان</h3>
-                    <div class="reader-body">
-                        <p class="reader-text" id="ramadan-content">...</p>
+                    <div class="setting-item">
+                        <span class="setting-label">صوت النقر</span>
+                        <label class="toggle-switch"><input type="checkbox" id="setting-sound" checked><span class="toggle-slider"></span></label>
                     </div>
                 </div>
-
-                <div class="reader-controls">
-                    <button class="control-btn share-btn" id="share-ramadan-btn"><i class="fas fa-share-nodes"></i></button>
-                    <button class="control-btn audio-play-btn" id="ramadan-audio-btn"><i class="fas fa-play"></i></button>
-                    <button class="control-btn nav-btn prev-btn" id="ramadan-prev-btn"><i class="fas fa-chevron-right"></i></button>
-                    <button class="control-btn nav-btn next-btn" id="ramadan-next-btn"><i class="fas fa-chevron-left"></i></button>
-                </div>
-            </section>
-
-            <!-- VIEW: Listen Azkar (Audio) -->
-            <section id="view-listen" class="view">
-                <div class="tabs">
-                    <button class="tab-btn active" data-target="listen-morning" data-view="listen">سماع أذكار الصباح</button>
-                    <button class="tab-btn" data-target="listen-evening" data-view="listen">سماع أذكار المساء</button>
-                </div>
-
-                <div class="audio-player-card">
-                    <div class="visualizer" id="visualizer">
-                        <!-- CSS animated bars -->
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-
-                    <button class="play-pause-btn" id="main-play-btn"><i class="fas fa-pause"></i></button>
-
-                    <div class="volume-control">
-                        <i class="fas fa-volume-xmark"></i>
-                        <input type="range" min="0" max="100" value="50" class="slider" id="volume-slider">
-                        <i class="fas fa-volume-high"></i>
+                <div class="settings-section">
+                    <div class="settings-section-title"><i class="fas fa-palette"></i> المظهر</div>
+                    <div class="theme-options">
+                        <div class="theme-option active" data-theme="light"><div class="theme-preview theme-light-preview"></div><span>فاتح</span></div>
+                        <div class="theme-option" data-theme="dark"><div class="theme-preview theme-dark-preview"></div><span>داكن</span></div>
+                        <div class="theme-option" data-theme="sepia"><div class="theme-preview theme-sepia-preview"></div><span>كلاسيكي</span></div>
                     </div>
                 </div>
-            </section>
-
-            <!-- VIEW: Settings -->
-            <section id="view-settings" class="view">
-                <div class="settings-container">
-                    <!-- Sound Section -->
-                    <div class="settings-section">
-                        <div class="settings-section-title">
-                            <i class="fas fa-volume-up"></i>
-                            <span>الصوت</span>
-                        </div>
-                        <div class="setting-item">
-                            <span class="setting-label">اهتزاز عند الضغط</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="setting-vibration" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="setting-item">
-                            <span class="setting-label">صوت عند الضغط</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="setting-sound" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Theme Section -->
-                    <div class="settings-section">
-                        <div class="settings-section-title">
-                            <i class="fas fa-palette"></i>
-                            <span>المظهر</span>
-                        </div>
-                        <div class="theme-options" id="theme-options">
-                            <div class="theme-option active" data-theme="light">
-                                <div class="theme-preview theme-light-preview"></div>
-                                <span>فاتح</span>
-                            </div>
-                            <div class="theme-option" data-theme="dark">
-                                <div class="theme-preview theme-dark-preview"></div>
-                                <span>داكن</span>
-                            </div>
-                            <div class="theme-option" data-theme="sepia">
-                                <div class="theme-preview theme-sepia-preview"></div>
-                                <span>كلاسيكي</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Font Size Section -->
-                    <div class="settings-section">
-                        <div class="settings-section-title">
-                            <i class="fas fa-font"></i>
-                            <span>حجم الخط</span>
-                        </div>
-                        <div class="font-size-options" id="font-size-options">
-                            <button class="font-size-btn" data-size="small">صغير</button>
-                            <button class="font-size-btn active" data-size="medium">متوسط</button>
-                            <button class="font-size-btn" data-size="large">كبير</button>
-                        </div>
-                    </div>
-
-                    <!-- Notifications -->
-                    <div class="settings-section">
-                        <div class="settings-section-title">
-                            <i class="fas fa-bell"></i>
-                            <span>التنبيهات</span>
-                        </div>
-                        <div class="setting-item">
-                            <span class="setting-label">تذكير بأذكار الصباح</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="setting-morning-reminder">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="setting-item">
-                            <span class="setting-label">تذكير بأذكار المساء</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="setting-evening-reminder">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- About -->
-                    <div class="settings-section">
-                        <div class="settings-section-title">
-                            <i class="fas fa-info-circle"></i>
-                            <span>حول التطبيق</span>
-                        </div>
-                        <div class="about-card">
-                            <div class="about-icon">
-                                <i class="fas fa-mosque"></i>
-                            </div>
-                            <h3>اذكار الصباح والمساء</h3>
-                            <p>الإصدار 4.5</p>
-                            <p class="about-desc">تطبيق شامل للأذكار والأدعية اليومية</p>
-                        </div>
-                    </div>
-
-                    <!-- Share -->
-                    <div class="settings-section">
-                        <button class="share-app-btn" id="share-app-btn">
-                            <i class="fas fa-share-alt"></i>
-                            <span>مشاركة التطبيق</span>
-                        </button>
+                <div class="settings-section">
+                    <div class="settings-section-title"><i class="fas fa-text-height"></i> حجم الخط</div>
+                    <div class="font-size-options">
+                        <button class="font-size-btn" data-size="small">صغير</button>
+                        <button class="font-size-btn active" data-size="medium">متوسط</button>
+                        <button class="font-size-btn" data-size="large">كبير</button>
                     </div>
                 </div>
-            </section>
+                <div class="settings-section">
+                    <div class="settings-section-title"><i class="fas fa-bell"></i> التنبيهات</div>
+                    <div class="setting-item">
+                        <span class="setting-label">تذكير أذكار الصباح</span>
+                        <label class="toggle-switch"><input type="checkbox" id="setting-morning-reminder"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">تذكير أذكار المساء</span>
+                        <label class="toggle-switch"><input type="checkbox" id="setting-evening-reminder"><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <div class="about-card">
+                        <div class="about-icon"><i class="fas fa-mosque"></i></div>
+                        <h3>اذكار الصباح والمساء</h3>
+                        <p>الإصدار 4.5</p>
+                        <p class="about-desc">تطبيق شامل للأذكار والأدعية اليومية</p>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <button class="share-app-btn" id="share-app-btn"><i class="fas fa-share-alt"></i> مشاركة التطبيق</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
 
-        </main>
-    </div>
-
-    <!-- Hidden Audio Element -->
-    <audio id="audio-player" preload="none"></audio>
-
-    <!-- Scripts -->
-    <script src="data.js"></script>
-    <script src="app.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
-
 </html>

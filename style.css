@@ -630,7 +630,7 @@ body {
 
 /* Expanded comprehensive item */
 .comprehensive-item.expanded .item-text {
-    -webkit-line-clamp: unset;
+    -webkit-line-clamp: initial;
     display: block;
 }
 
@@ -1093,7 +1093,7 @@ body {
 
 .theme-light-preview {
     background: linear-gradient(135deg, #f5f7f6, #ffffff);
-    border: 2px solid #e0e0e0;
+    border-color: #e0e0e0;
 }
 
 .theme-dark-preview {
@@ -1102,7 +1102,7 @@ body {
 
 .theme-sepia-preview {
     background: linear-gradient(135deg, #f4ecd8, #faf5eb);
-    border: 2px solid #e0d5c0;
+    border-color: #e0d5c0;
 }
 
 /* Font size options */
